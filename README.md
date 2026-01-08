@@ -58,78 +58,6 @@ streamlit run app_web.py
 
 The web app will open at `http://localhost:8501`
 
-## 🌐 How to Deploy on Hugging Face Spaces
-
-### Prerequisites
-
-- Hugging Face account (free)
-- Git and Git LFS installed
-
-### Step-by-Step Deployment
-
-1. **Create a New Space**
-
-   - Go to https://huggingface.co/spaces
-   - Click "Create new Space"
-   - Choose Space name: `sarcasm-detection` (or your preference)
-   - Select "Docker" runtime
-   - Click "Create Space"
-
-2. **Clone the Space Repository**
-
-   ```bash
-   git clone https://huggingface.co/spaces/your-username/sarcasm-detection
-   cd sarcasm-detection
-   ```
-
-3. **Add Model Files with Git LFS**
-
-   ```bash
-   git lfs install
-   git lfs track "best_checkpoint/*"
-   ```
-
-4. **Copy Project Files**
-
-   - Copy `app_api.py`, `app_web.py`, `requirements.txt`, `README.md`
-   - Copy entire `best_checkpoint` folder
-
-5. **Create Dockerfile**
-
-   Create a file named `Dockerfile`:
-
-   ```dockerfile
-   FROM python:3.10
-
-   WORKDIR /app
-
-   COPY requirements.txt .
-   RUN pip install --no-cache-dir -r requirements.txt
-
-   COPY . .
-
-   EXPOSE 7860 8501
-
-   CMD bash -c "python app_api.py & streamlit run app_web.py --server.port=8501"
-   ```
-
-6. **Create .gitattributes**
-
-   ```
-   best_checkpoint/** filter=lfs diff=lfs merge=lfs -text
-   *.safetensors filter=lfs diff=lfs merge=lfs -text
-   ```
-
-7. **Push to Hugging Face**
-
-   ```bash
-   git add .
-   git commit -m "Add sarcasm detection app"
-   git push
-   ```
-
-   Hugging Face will automatically build and deploy your space!
-
 ## 📡 API Endpoints
 
 ### Health Check
@@ -245,3 +173,4 @@ For issues or questions, check:
 1. Model files are complete in `best_checkpoint`
 2. Dependencies installed: `pip install -r requirements.txt`
 3. Both services running (API on 7860, Streamlit on 8501)
+
